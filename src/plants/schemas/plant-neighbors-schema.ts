@@ -4,9 +4,6 @@ import { NeighborInfo, PlantType } from '../dto/create-plant.dto';
 @Schema()
 export class Neighbor {
   @Prop({ required: true })
-  id: string;
-
-  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })

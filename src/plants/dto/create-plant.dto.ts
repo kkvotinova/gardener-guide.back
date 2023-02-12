@@ -14,13 +14,14 @@ export enum PossibleQuickInfo {
 }
 
 export interface ApiPlantQuickInfo {
+  readonly _id: string;
   readonly type: PossibleQuickInfo;
   readonly value: string;
   readonly description?: string;
 }
 
 export interface NeighborInfo {
-  readonly id: string;
+  readonly _id: string;
   readonly name: string;
   readonly type: PlantType;
   readonly preview: string;
@@ -37,7 +38,7 @@ export interface ApiPlantFullInfo {
 }
 
 export class CreatePlantDto {
-  private readonly id: string;
+  private readonly _id: string;
   private readonly name: string;
   private readonly type: PlantType;
   private readonly preview: string;

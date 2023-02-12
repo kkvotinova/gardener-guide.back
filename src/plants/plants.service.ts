@@ -26,7 +26,7 @@ export class PlantsService {
     return this.plantModel.find().exec();
   }
 
-  async findOne(id: number, type: string): Promise<Plant> {
+  async findOne(id: string, type: string): Promise<Plant> {
     if (!PlantType[type]) {
       throw new HttpException(
         { message: 'Указан неверный тип' },

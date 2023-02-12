@@ -22,6 +22,6 @@ export class PlantsController {
     @Param('id') id: string,
     @Param('type') type: PlantType,
   ): Promise<Plant> {
-    return this.plantsService.findOne(+id, type);
+    return this.plantsService.findOne(id, type);
   }
 }

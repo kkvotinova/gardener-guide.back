@@ -15,9 +15,6 @@ export type PlantDocument = HydratedDocument<Plant>;
 @Schema()
 export class Plant {
   @Prop({ required: true })
-  id: string;
-
-  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
