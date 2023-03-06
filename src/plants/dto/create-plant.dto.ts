@@ -1,3 +1,5 @@
+import { IsString } from 'class-validator';
+
 export enum PlantType {
   vegetable = 'vegetable',
   herb = 'herb',
@@ -38,13 +40,22 @@ export interface ApiPlantFullInfo {
 }
 
 export class CreatePlantDto {
-  private readonly _id: string;
-  private readonly name: string;
-  private readonly type: PlantType;
-  private readonly preview: string;
-  private readonly description: string;
-  private readonly gallery: string[];
-  private readonly quickInfo: ApiPlantQuickInfo[];
-  private readonly neighbors: ApiPlantNeighbors;
-  private readonly fullInfo: ApiPlantFullInfo[];
+  readonly _id: string;
+
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly type: PlantType;
+
+  @IsString()
+  readonly preview: string;
+
+  @IsString()
+  readonly description: string;
+
+  readonly gallery: string[];
+  readonly quickInfo: ApiPlantQuickInfo[];
+  readonly neighbors: ApiPlantNeighbors;
+  readonly fullInfo: ApiPlantFullInfo[];
 }

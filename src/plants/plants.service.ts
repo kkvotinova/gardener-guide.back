@@ -11,6 +11,13 @@ export class PlantsService {
   ) {}
 
   async create(createPlantDto: CreatePlantDto): Promise<Plant> {
+    if (!PlantType[createPlantDto.type]) {
+      throw new HttpException(
+        { message: 'Указан неверный тип' },
+        HttpStatus.CONFLICT,
+      );
+    }
+
     const newPlant = new this.plantModel(createPlantDto);
     return newPlant.save();
   }
@@ -23,7 +30,7 @@ export class PlantsService {
       );
     }
 
-    return this.plantModel.find().exec();
+    return this.plantModel.find({ type: type }).exec();
   }
 
   async findOne(id: string, type: string): Promise<Plant> {
