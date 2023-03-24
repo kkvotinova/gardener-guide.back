@@ -22,12 +22,17 @@ export class PlantsService {
     return newPlant.save();
   }
 
-  async findAll(type: string): Promise<Plant[]> {
+  async findAll(type: string, name: string): Promise<Plant[]> {
     if (!PlantType[type]) {
       throw new HttpException(
         { message: 'Указан неверный тип' },
         HttpStatus.NOT_FOUND,
       );
+    }
+
+    if (name) {
+      const regex = new RegExp(name, 'ig');
+      return this.plantModel.find({ type: type, name: regex }).exec();
     }
 
     return this.plantModel.find({ type: type }).exec();

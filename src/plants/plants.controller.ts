@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { PlantsService } from './plants.service';
 import { CreatePlantDto, PlantType } from './dto/create-plant.dto';
 import { Plant } from './schemas/plant.schema';
@@ -13,8 +13,11 @@ export class PlantsController {
   }
 
   @Get(':type')
-  findAll(@Param('type') type: PlantType): Promise<Plant[]> {
-    return this.plantsService.findAll(type);
+  findAll(
+    @Param('type') type: PlantType,
+    @Query('name') name: string,
+  ): Promise<Plant[]> {
+    return this.plantsService.findAll(type, name);
   }
 
   @Get(':type/:id')
