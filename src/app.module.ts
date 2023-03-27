@@ -1,17 +1,26 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './auth/auth.module';
 import { PlantsModule } from './plants/plants.module';
+import { AuthModule } from './auth/auth.module';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { getMongoConfig } from './config/mongo.config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
+    TypegooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMongoConfig,
+    }),
     MongooseModule.forRoot(process.env.DB_URL),
-    AuthModule,
     PlantsModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
