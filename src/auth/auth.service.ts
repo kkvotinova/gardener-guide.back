@@ -8,6 +8,7 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersModel } from 'src/users/users.model';
 import { UsersService } from 'src/users/users.service';
+import { AuthLoginDto } from './auth-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,17 +17,29 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(userDto: CreateUserDto) {
+  async login(userDto: AuthLoginDto) {
     const user = await this.validateUser(userDto);
     return this.generateToken(user);
   }
 
   async register(userDto: CreateUserDto) {
-    const candidate = await this.usersService.getUserByEmail(userDto.email);
+    const candidateWithEmail = await this.usersService.getUserByEmail(
+      userDto.email,
+    );
 
-    if (candidate) {
+    if (candidateWithEmail) {
       throw new BadRequestException(
         'Пользователь с такой почтой уже существует',
+      );
+    }
+
+    const candidateWithNickname = await this.usersService.getUserByNickname(
+      userDto.username,
+    );
+
+    if (candidateWithNickname) {
+      throw new BadRequestException(
+        'Пользователь с таким именем уже существует',
       );
     }
 
@@ -35,6 +48,7 @@ export class AuthService {
 
     const user = await this.usersService.create({
       email: userDto.email,
+      username: userDto.username,
       password: hashPassword,
     });
 
@@ -45,6 +59,7 @@ export class AuthService {
     const payload = {
       _id: user._id,
       email: user.email,
+      username: user.username,
     };
 
     return {
@@ -54,7 +69,7 @@ export class AuthService {
     };
   }
 
-  private async validateUser(userDto: CreateUserDto) {
+  private async validateUser(userDto: AuthLoginDto) {
     const user = await this.usersService.getUserByEmail(userDto.email);
 
     if (!user)
