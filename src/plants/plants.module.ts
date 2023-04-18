@@ -1,19 +1,19 @@
-import { Module } from '@nestjs/common';
-import { PlantsService } from './plants.service';
+import { Module, forwardRef } from '@nestjs/common';
 import { PlantsController } from './plants.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Plant, PlantSchema } from './schemas/plant.schema';
+import { PlantsService } from './plants.service';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { PlantsModel } from './plants.model';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      {
-        name: Plant.name,
-        schema: PlantSchema,
-      },
+    forwardRef(() => UsersModule),
+    TypegooseModule.forFeature([
+      { typegooseClass: PlantsModel, schemaOptions: { collection: 'plants' } },
     ]),
   ],
   controllers: [PlantsController],
   providers: [PlantsService],
+  exports: [PlantsService],
 })
 export class PlantsModule {}

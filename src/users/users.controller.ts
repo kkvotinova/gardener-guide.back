@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   UseGuards,
   UsePipes,
@@ -12,6 +13,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import User from './user.decorator';
 import { UsersModel } from './users.model';
 import { UsersService } from './users.service';
+import { UpdateUserGardenDto } from './dto/update-user-garden.dto';
+import { DeleteUserGardenDto } from './dto/delete-user-garden.dto';
 
 @Controller('users')
 export class UsersController {
@@ -32,5 +35,23 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   getProfile(@User() user: UsersModel) {
     return this.userService.getProfile(user);
+  }
+
+  @Patch('/garden')
+  @UseGuards(JwtAuthGuard)
+  updateUserGarden(
+    @User() user: UsersModel,
+    @Body() updateUserGardenDto: UpdateUserGardenDto,
+  ) {
+    return this.userService.updateUserGarden(user, updateUserGardenDto);
+  }
+
+  @Patch('/garden/delete')
+  @UseGuards(JwtAuthGuard)
+  deleteUserGarden(
+    @User() user: UsersModel,
+    @Body() deleteUserGardenDto: DeleteUserGardenDto,
+  ) {
+    return this.userService.deleteUserGarden(user, deleteUserGardenDto);
   }
 }

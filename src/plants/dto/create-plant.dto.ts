@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsArray } from 'class-validator';
 
 export enum PlantType {
   vegetable = 'vegetable',
@@ -15,27 +15,44 @@ export enum PossibleQuickInfo {
   SPROUT_TO_HARVEST = 'SPROUT_TO_HARVEST',
 }
 
-export interface ApiPlantQuickInfo {
+export class ApiPlantQuickInfo {
+  @IsString()
   readonly _id: string;
+
+  @IsString()
   readonly type: PossibleQuickInfo;
+
+  @IsString()
   readonly value: string;
+
+  @IsString()
   readonly description?: string;
 }
 
-export interface NeighborInfo {
+export class NeighborInfo {
+  @IsString()
   readonly _id: string;
+
+  @IsString()
   readonly name: string;
+
+  @IsString()
   readonly type: PlantType;
+
+  @IsString()
   readonly preview: string;
 }
 
-export interface ApiPlantNeighbors {
+export class ApiPlantNeighbors {
   readonly companion: NeighborInfo[];
   readonly combative: NeighborInfo[];
 }
 
-export interface ApiPlantFullInfo {
+export class ApiPlantFullInfo {
+  @IsString()
   readonly title: string;
+
+  @IsString()
   readonly description: string;
 }
 
@@ -54,6 +71,7 @@ export class CreatePlantDto {
   @IsString()
   readonly description: string;
 
+  @IsArray()
   readonly gallery: string[];
   readonly quickInfo: ApiPlantQuickInfo[];
   readonly neighbors: ApiPlantNeighbors;

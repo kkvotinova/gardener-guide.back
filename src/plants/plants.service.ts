@@ -1,16 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectModel } from 'nestjs-typegoose';
+import { PlantsModel } from './plants.model';
+import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreatePlantDto, PlantType } from './dto/create-plant.dto';
-import { Plant, PlantDocument } from './schemas/plant.schema';
 
 @Injectable()
 export class PlantsService {
   constructor(
-    @InjectModel(Plant.name) private plantModel: Model<PlantDocument>,
+    @InjectModel(PlantsModel)
+    private readonly plantsModel: ModelType<PlantsModel>,
   ) {}
 
-  async create(createPlantDto: CreatePlantDto): Promise<Plant> {
+  async create(createPlantDto: CreatePlantDto) {
     if (!PlantType[createPlantDto.type]) {
       throw new HttpException(
         { message: 'Указан неверный тип' },
@@ -18,11 +19,11 @@ export class PlantsService {
       );
     }
 
-    const newPlant = new this.plantModel(createPlantDto);
+    const newPlant = new this.plantsModel(createPlantDto);
     return newPlant.save();
   }
 
-  async findAll(type: string, name: string): Promise<Plant[]> {
+  async findAll(type: string, name: string) {
     if (!PlantType[type]) {
       throw new HttpException(
         { message: 'Указан неверный тип' },
@@ -32,13 +33,13 @@ export class PlantsService {
 
     if (name) {
       const regex = new RegExp(name, 'ig');
-      return this.plantModel.find({ type: type, name: regex }).exec();
+      return this.plantsModel.find({ type: type, name: regex }).exec();
     }
 
-    return this.plantModel.find({ type: type }).exec();
+    return this.plantsModel.find({ type: type }).exec();
   }
 
-  async findOne(id: string, type: string): Promise<Plant> {
+  async findOne(id: string, type: string) {
     if (!PlantType[type]) {
       throw new HttpException(
         { message: 'Указан неверный тип' },
@@ -46,6 +47,6 @@ export class PlantsService {
       );
     }
 
-    return this.plantModel.findById(id);
+    return this.plantsModel.findById(id);
   }
 }
