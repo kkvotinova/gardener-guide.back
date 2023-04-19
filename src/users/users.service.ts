@@ -26,7 +26,12 @@ export class UsersService {
 
   async getProfile(user: UsersModel) {
     const result = await this.usersModel.findById(user._id);
-    return result;
+    return {
+      _id: result._id,
+      email: result.email,
+      username: result.username,
+      garden: result.garden,
+    };
   }
 
   async getUserByEmail(email: string) {
