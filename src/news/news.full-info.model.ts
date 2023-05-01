@@ -1,15 +1,15 @@
 import { prop } from '@typegoose/typegoose/lib/prop';
 import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 
-export interface NotesModel extends Base {}
+export interface NewsFullInfoModel extends Base {}
 
-export class NotesModel {
+export class NewsFullInfoModel {
   @prop()
-  title: string;
-
-  @prop()
-  userId: string;
+  title?: string;
 
   @prop()
+  preview?: string;
+
+  @prop({ required: true })
   description: string;
 }

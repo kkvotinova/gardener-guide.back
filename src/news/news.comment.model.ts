@@ -1,9 +1,12 @@
 import { prop } from '@typegoose/typegoose/lib/prop';
 
-export class PlantFullInfo {
+export class NewsCommentModel {
   @prop({ required: true })
-  title: string;
+  username: string;
 
   @prop({ required: true })
   description: string;
+
+  @prop({ required: true })
+  createdAt: Date;
 }

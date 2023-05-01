@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { prop } from '@typegoose/typegoose/lib/prop';
 import { PlantType } from './dto/create-plant.dto';
 
 export class Neighbor {

@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { prop } from '@typegoose/typegoose/lib/prop';
 import { Base } from '@typegoose/typegoose/lib/defaultClasses';
 import { PlantType } from './dto/create-plant.dto';
 import { PlantQuickInfo } from './plant.quick-info.model';
