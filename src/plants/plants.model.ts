@@ -31,4 +31,7 @@ export class PlantsModel {
 
   @prop()
   fullInfo: PlantFullInfo[];
+
+  @prop()
+  videoId?: string;
 }
