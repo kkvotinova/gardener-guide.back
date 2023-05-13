@@ -1,4 +1,5 @@
-import { IsString, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsArray, ValidateNested, IsEnum } from 'class-validator';
 
 export enum PlantType {
   vegetable = 'vegetable',
@@ -16,10 +17,7 @@ export enum PossibleQuickInfo {
 }
 
 export class ApiPlantQuickInfo {
-  @IsString()
-  readonly _id: string;
-
-  @IsString()
+  @IsEnum(PossibleQuickInfo)
   readonly type: PossibleQuickInfo;
 
   @IsString()
@@ -31,12 +29,9 @@ export class ApiPlantQuickInfo {
 
 export class NeighborInfo {
   @IsString()
-  readonly _id: string;
-
-  @IsString()
   readonly name: string;
 
-  @IsString()
+  @IsEnum(PlantType)
   readonly type: PlantType;
 
   @IsString()
@@ -44,7 +39,14 @@ export class NeighborInfo {
 }
 
 export class ApiPlantNeighbors {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => NeighborInfo)
   readonly companion: NeighborInfo[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => NeighborInfo)
   readonly combative: NeighborInfo[];
 }
 
@@ -57,12 +59,10 @@ export class ApiPlantFullInfo {
 }
 
 export class CreatePlantDto {
-  readonly _id: string;
-
   @IsString()
   readonly name: string;
 
-  @IsString()
+  @IsEnum(PlantType)
   readonly type: PlantType;
 
   @IsString()
@@ -73,7 +73,16 @@ export class CreatePlantDto {
 
   @IsArray()
   readonly gallery: string[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ApiPlantQuickInfo)
   readonly quickInfo: ApiPlantQuickInfo[];
+
   readonly neighbors: ApiPlantNeighbors;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ApiPlantFullInfo)
   readonly fullInfo: ApiPlantFullInfo[];
 }

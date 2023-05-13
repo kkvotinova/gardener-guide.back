@@ -1,9 +1,12 @@
 import { prop } from '@typegoose/typegoose/lib/prop';
-import { PlantType } from './dto/create-plant.dto';
+import { PossibleQuickInfo } from './dto/create-plant.dto';
+import { Base } from '@typegoose/typegoose/lib/defaultClasses';
+
+export interface PlantQuickInfo extends Base {}
 
 export class PlantQuickInfo {
   @prop({ required: true })
-  type: PlantType;
+  type: PossibleQuickInfo;
 
   @prop({ required: true })
   value: string;

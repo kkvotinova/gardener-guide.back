@@ -1,5 +1,8 @@
 import { prop } from '@typegoose/typegoose/lib/prop';
 import { PlantType } from './dto/create-plant.dto';
+import { Base } from '@typegoose/typegoose/lib/defaultClasses';
+
+export interface Neighbor extends Base {}
 
 export class Neighbor {
   @prop({ required: true })
